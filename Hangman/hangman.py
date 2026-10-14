@@ -1,7 +1,7 @@
 import random
 
-print("HANGMAN!")
-print("Guess the word!")
+print("HANGMAN")
+print()
 
 words = ['java', 'python', 'javascript', 'php']
 word = random.choice(words)
@@ -9,37 +9,40 @@ hidden = '-' * len(word)
 guessedletter = []
 attempts = 8
 
-print(f'guess the word {hidden}')
-
 while attempts > 0:
-    a = input('your letter?\n')
+    print(hidden)
+    a = input("Input a letter: > ")
 
-    if a not in word:
-        print("That letter doesn't appear in the word")
-        attempts -= 1
+    if len(a) != 1:
+        print("You should input a single letter")
+
+    elif a not in 'abcdefghijklmnopqrstuvwxyz':
+        print("Please enter a lowercase English letter")
 
     elif a in guessedletter:
-        print("No improvements")
-        attempts -= 1
+        print("You've already guessed this letter")
 
     else:
         guessedletter.append(a)
 
-    hiddenword = ''
+        if a not in word:
+            print("That letter doesn't appear in the word")
+            attempts -= 1
 
-    for letter in word:
-        if letter in guessedletter:
-            hiddenword += letter
-        else:
-            hiddenword += '-'
+        hiddenword = ''
 
-    if hiddenword == word:
-        print("You guessed the word!")
-        print("You survived!")
-        break
+        for letter in word:
+            if letter in guessedletter:
+                hiddenword += letter
+            else:
+                hiddenword += '-'
 
-    if attempts == 0:
-        print("You lost!")
-        break
+        hidden = hiddenword
 
-    print(hiddenword)
+        if hidden == word:
+            print(f"You guessed the word {word}!")
+            print("You survived!")
+            break
+
+else:
+    print("You lost!")
