@@ -1,48 +1,56 @@
+
 import random
 
 print("HANGMAN")
-print()
 
 words = ['java', 'python', 'javascript', 'php']
-word = random.choice(words)
-hidden = '-' * len(word)
-guessedletter = []
-attempts = 8
 
-while attempts > 0:
-    print(hidden)
-    a = input("Input a letter: > ")
+while True:
+    menu = input('Type "play" to play the game, "exit" to quit: ')
 
-    if len(a) != 1:
-        print("You should input a single letter")
+    if menu == 'exit':
+        break
 
-    elif a not in 'abcdefghijklmnopqrstuvwxyz':
-        print("Please enter a lowercase English letter")
+    elif menu == 'play':
+        word = random.choice(words)
+        hidden = '-' * len(word)
+        guessedletter = []
+        attempts = 8
 
-    elif a in guessedletter:
-        print("You've already guessed this letter")
+        while attempts > 0:
+            print(hidden)
+            a = input("Input a letter: ")
 
-    else:
-        guessedletter.append(a)
+            if len(a) != 1:
+                print("You should input a single letter")
 
-        if a not in word:
-            print("That letter doesn't appear in the word")
-            attempts -= 1
+            elif a not in 'abcdefghijklmnopqrstuvwxyz':
+                print("Please enter a lowercase English letter")
 
-        hiddenword = ''
+            elif a in guessedletter:
+                print("You've already guessed this letter")
 
-        for letter in word:
-            if letter in guessedletter:
-                hiddenword += letter
             else:
-                hiddenword += '-'
+                guessedletter.append(a)
 
-        hidden = hiddenword
+                if a not in word:
+                    print("That letter doesn't appear in the word")
+                    attempts -= 1
 
-        if hidden == word:
-            print(f"You guessed the word {word}!")
-            print("You survived!")
-            break
+                hiddenword = ''
 
-else:
-    print("You lost!")
+                for letter in word:
+                    if letter in guessedletter:
+                        hiddenword += letter
+                    else:
+                        hiddenword += '-'
+
+                hidden = hiddenword
+
+                if hidden == word:
+                    print(f"You guessed the word {word}!")
+                    print("You survived!")
+                    break
+
+        else:
+            print("You lost!")
