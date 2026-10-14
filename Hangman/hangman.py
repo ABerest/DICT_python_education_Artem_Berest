@@ -3,7 +3,7 @@ print("HANGMAN!")
 print('Guess the word!')
 words = ['java', 'python', 'C++', 'javascript', 'php']
 word = random.choice(words)
-a = input("Guess the word:\n")
+a = input("Guess the word:")
 
 if a == word:
     print ('You Survived!')
