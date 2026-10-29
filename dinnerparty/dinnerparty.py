@@ -11,4 +11,12 @@ else:
         name = input()
         friends[name] = 0
 
+    print("Enter the total amount:")
+    total = float(input())
+
+    amount = round(total / number, 2)
+
+    for name in friends:
+        friends[name] = amount
+
     print(friends)
