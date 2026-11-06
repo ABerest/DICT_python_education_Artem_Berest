@@ -1,43 +1,35 @@
-cells = input("Enter cells: ")
+cells = list(input("Enter cells: "))
 
-print("---------")
 
-for i in range(0, 9, 3):
-    print("|", cells[i], cells[i + 1], cells[i + 2], "|")
+def print_field():
+    print("---------")
+    for i in range(0, 9, 3):
+        print("|", cells[i], cells[i + 1], cells[i + 2], "|")
+    print("---------")
 
-print("---------")
 
-x_count = cells.count("X")
-o_count = cells.count("O")
+print_field()
 
-wins = [
-    (0, 1, 2),
-    (3, 4, 5),
-    (6, 7, 8),
-    (0, 3, 6),
-    (1, 4, 7),
-    (2, 5, 8),
-    (0, 4, 8),
-    (2, 4, 6)
-]
+while True:
+    coordinates = input("Enter the coordinates: ").split()
 
-x_wins = False
-o_wins = False
+    try:
+        x, y = map(int, coordinates)
+    except ValueError:
+        print("You should enter numbers!")
+        continue
 
-for a, b, c in wins:
-    if cells[a] == cells[b] == cells[c]:
-        if cells[a] == "X":
-            x_wins = True
-        elif cells[a] == "O":
-            o_wins = True
+    if not (1 <= x <= 3 and 1 <= y <= 3):
+        print("Coordinates should be from 1 to 3!")
+        continue
 
-if abs(x_count - o_count) >= 2 or (x_wins and o_wins):
-    print("Impossible")
-elif x_wins:
-    print("X wins")
-elif o_wins:
-    print("O wins")
-elif "_" in cells:
-    print("Game not finished")
-else:
-    print("Draw")
+    index = (y - 1) * 3 + (x - 1)
+
+    if cells[index] != "_":
+        print("This cell is occupied! Choose another one!")
+        continue
+
+    cells[index] = "X"
+    break
+
+print_field()
