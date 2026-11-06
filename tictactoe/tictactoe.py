@@ -1,3 +1,8 @@
-print("X O X")
-print("O X O")
-print("X X O")
+cells = input("Enter cells: ")
+
+print("---------")
+
+for i in range(0, 9, 3):
+    print("|", cells[i], cells[i + 1], cells[i + 2], "|")
+
+print("---------")
