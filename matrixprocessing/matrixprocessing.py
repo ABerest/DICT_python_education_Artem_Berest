@@ -24,7 +24,7 @@ def show_matrix(matrix):
     print("The result is:")
 
     for row in matrix:
-        print(*[f"{x:g}" for x in row])
+        print(*[f"{x:.2f}".rstrip("0").rstrip(".") for x in row])
 
 
 def add_matrices(a, b):
@@ -76,11 +76,88 @@ def transpose_matrix(matrix, method):
         return matrix[::-1]
 
 
+def determinant(matrix):
+    if len(matrix) != len(matrix[0]):
+        return None
+
+    data = [row[:] for row in matrix]
+    size = len(data)
+    result = 1
+
+    for i in range(size):
+        pivot = max(range(i, size), key=lambda r: abs(data[r][i]))
+
+        if abs(data[pivot][i]) < 1e-10:
+            return 0
+
+        if pivot != i:
+            data[i], data[pivot] = data[pivot], data[i]
+            result *= -1
+
+        value = data[i][i]
+        result *= value
+
+        for j in range(i + 1, size):
+            factor = data[j][i] / value
+
+            for k in range(i, size):
+                data[j][k] -= factor * data[i][k]
+
+    return result
+
+
+def inverse_matrix(matrix):
+    size = len(matrix)
+
+    if size != len(matrix[0]):
+        return None
+
+    left = [row[:] for row in matrix]
+    right = [
+        [1.0 if i == j else 0.0 for j in range(size)]
+        for i in range(size)
+    ]
+
+    for i in range(size):
+        pivot = max(range(i, size), key=lambda r: abs(left[r][i]))
+
+        if abs(left[pivot][i]) < 1e-10:
+            return None
+
+        left[i], left[pivot] = left[pivot], left[i]
+        right[i], right[pivot] = right[pivot], right[i]
+
+        divider = left[i][i]
+
+        left[i] = [x / divider for x in left[i]]
+        right[i] = [x / divider for x in right[i]]
+
+        for j in range(size):
+            if j == i:
+                continue
+
+            factor = left[j][i]
+
+            left[j] = [
+                x - factor * y
+                for x, y in zip(left[j], left[i])
+            ]
+
+            right[j] = [
+                x - factor * y
+                for x, y in zip(right[j], right[i])
+            ]
+
+    return right
+
+
 while True:
     print("1. Add matrices")
     print("2. Multiply matrix by a constant")
     print("3. Multiply matrices")
     print("4. Transpose matrix")
+    print("5. Calculate a determinant")
+    print("6. Inverse matrix")
     print("0. Exit")
 
     choice = input("Your choice: > ")
@@ -93,15 +170,26 @@ while True:
         second = read_matrix("second")
         result = add_matrices(first, second)
 
+        if result is None:
+            print("The operation cannot be performed.")
+        else:
+            show_matrix(result)
+
     elif choice == "2":
         matrix = read_matrix()
         number = float(input("Enter constant: > "))
         result = multiply_constant(matrix, number)
+        show_matrix(result)
 
     elif choice == "3":
         first = read_matrix("first")
         second = read_matrix("second")
         result = multiply_matrices(first, second)
+
+        if result is None:
+            print("The operation cannot be performed.")
+        else:
+            show_matrix(result)
 
     elif choice == "4":
         print("1. Main diagonal")
@@ -118,11 +206,29 @@ while True:
         matrix = read_matrix()
         result = transpose_matrix(matrix, method)
 
+        if result is None:
+            print("The operation cannot be performed.")
+        else:
+            show_matrix(result)
+
+    elif choice == "5":
+        matrix = read_matrix()
+        result = determinant(matrix)
+
+        if result is None:
+            print("The operation cannot be performed.")
+        else:
+            print("The result is:")
+            print(f"{result:.2f}".rstrip("0").rstrip("."))
+
+    elif choice == "6":
+        matrix = read_matrix()
+        result = inverse_matrix(matrix)
+
+        if result is None:
+            print("This matrix doesn't have an inverse.")
+        else:
+            show_matrix(result)
+
     else:
         print("Invalid choice!")
-        continue
-
-    if result is None:
-        print("The operation cannot be performed.")
-    else:
-        show_matrix(result)
