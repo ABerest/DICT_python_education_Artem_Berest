@@ -1,5 +1,3 @@
-
-# Початкові запаси кавомашини
 water = 400
 milk = 540
 coffee_beans = 120
@@ -7,7 +5,7 @@ cups = 9
 money = 550
 
 
-def main():
+def remaining():
     print("The coffee machine has:")
     print(f"{water} of water")
     print(f"{milk} of milk")
@@ -19,7 +17,10 @@ def main():
 def buy():
     global water, milk, coffee_beans, cups, money
 
-    choice = input("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino:\n")
+    choice = input("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino, back - to main menu:\n")
+
+    if choice == "back":
+        return
 
     if choice == "1":
         need_water = 250
@@ -42,23 +43,30 @@ def buy():
     else:
         return
 
-    if water >= need_water and milk >= need_milk and coffee_beans >= need_coffee and cups >= 1:
+    if water < need_water:
+        print("Sorry, not enough water!")
+    elif milk < need_milk:
+        print("Sorry, not enough milk!")
+    elif coffee_beans < need_coffee:
+        print("Sorry, not enough coffee beans!")
+    elif cups < 1:
+        print("Sorry, not enough disposable cups!")
+    else:
+        print("I have enough resources, making you a coffee!")
         water -= need_water
         milk -= need_milk
         coffee_beans -= need_coffee
         cups -= 1
         money += price
-    else:
-        print("Sorry, not enough ingredients!")
 
 
 def fill():
     global water, milk, coffee_beans, cups
 
-    water += int(input("Write how many ml of water you want to add:\n"))
-    milk += int(input("Write how many ml of milk you want to add:\n"))
-    coffee_beans += int(input("Write how many grams of coffee beans you want to add:\n"))
-    cups += int(input("Write how many disposable coffee cups you want to add:\n"))
+    water += int(input("Write how many ml of water do you want to add:\n"))
+    milk += int(input("Write how many ml of milk do you want to add:\n"))
+    coffee_beans += int(input("Write how many grams of coffee beans do you want to add:\n"))
+    cups += int(input("Write how many disposable cups of coffee do you want to add:\n"))
 
 
 def take():
@@ -67,18 +75,20 @@ def take():
     print(f"I gave you {money}")
     money = 0
 
+while True:
+    action = input("Write action (buy, fill, take, remaining, exit):\n")
 
-main()
+    if action == "buy":
+        buy()
 
-action = input("Write action (buy, fill, take):\n")
+    elif action == "fill":
+        fill()
 
-if action == "buy":
-    buy()
+    elif action == "take":
+        take()
 
-elif action == "fill":
-    fill()
+    elif action == "remaining":
+        remaining()
 
-elif action == "take":
-    take()
-
-main()
+    elif action == "exit":
+        break
