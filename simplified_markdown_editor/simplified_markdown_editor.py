@@ -1,5 +1,3 @@
-
-
 # Функція для виведення основ
 def show_help():
     # Список усіх доступних форматерів
@@ -80,6 +78,31 @@ while True:
         # Додавання посилання до Markdown
         markdown += "[" + label + "](" + url + ")\n"
 
+    # Введено форматер списку
+    elif command == "ordered-list" or command == "unordered-list":
+
+        # Введення кількості рядків
+        rows = int(input("Number of rows: "))
+
+        # Перевірка кількості рядків
+        while rows <= 0:
+            print("The number of rows should be greater than zero")
+            rows = int(input("Number of rows: "))
+
+        # Додавання елементів списку
+        for i in range(1, rows + 1):
+
+            # Введення елемента списку
+            text = input(f"Row #{i}: ")
+
+            # Додавання елемента нумерованого списку
+            if command == "ordered-list":
+                markdown += f"{i}. {text}\n"
+
+            # Додавання елемента ненумерованого списку
+            else:
+                markdown += f"* {text}\n"
+
     # Введено інший форматер
     else:
 
@@ -102,14 +125,5 @@ while True:
         elif command == "inline-code":
             markdown += "`" + text + "`\n"
 
-        # Нумерований список
-        elif command == "ordered-list":
-            markdown += "1. " + text + "\n"
-
-        # Ненумерований список
-        elif command == "unordered-list":
-            markdown += "- " + text + "\n"
-
     # Виведення всієї Markdown-розмітки
     print(markdown, end="")
-
