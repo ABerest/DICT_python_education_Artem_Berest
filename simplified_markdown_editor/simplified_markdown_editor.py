@@ -1,4 +1,5 @@
 
+
 # Функція для виведення основ
 def show_help():
     # Список усіх доступних форматерів
@@ -22,6 +23,10 @@ formatters = [
 ]
 
 
+# Змінна для збереження Markdown
+markdown = ""
+
+
 # Основний цикл програми
 while True:
 
@@ -31,15 +36,80 @@ while True:
     # Введено команду довідки
     if command == "!help":
         show_help()
+        continue
 
     # Введено команду завершення програми
     elif command == "!done":
         break
 
-    # Введена команда є у списку форматерів
-    elif command in formatters:
+    # Введено невідому команду
+    elif command not in formatters:
+        print("Unknown formatting type or command")
         continue
 
-    # Введено невідому команду
+    # Введено команду нового рядка
+    elif command == "new-line":
+        markdown += "\n"
+
+    # Введено форматер заголовка
+    elif command == "header":
+
+        # Вибір рівня заголовка
+        level = int(input("Level: "))
+
+        # Перевірка рівня заголовка
+        if level < 1 or level > 6:
+            print("The level should be within the range of 1 to 6.")
+            continue
+
+        # Введення тексту заголовка
+        text = input("Text: ")
+
+        # Додавання заголовка до Markdown
+        markdown += "#" * level + " " + text + "\n"
+
+    # Введено форматер посилання
+    elif command == "link":
+
+        # Введення назви посилання
+        label = input("Label: ")
+
+        # Введення URL посилання
+        url = input("URL: ")
+
+        # Додавання посилання до Markdown
+        markdown += "[" + label + "](" + url + ")\n"
+
+    # Введено інший форматер
     else:
-        print("Unknown formatting type or command")
+
+        # Введення тексту
+        text = input("Text: ")
+
+        # Звичайний текст
+        if command == "plain":
+            markdown += text + "\n"
+
+        # Напівжирний текст
+        elif command == "bold":
+            markdown += "**" + text + "**\n"
+
+        # Курсивний текст
+        elif command == "italic":
+            markdown += "*" + text + "*\n"
+
+        # Вбудований код
+        elif command == "inline-code":
+            markdown += "`" + text + "`\n"
+
+        # Нумерований список
+        elif command == "ordered-list":
+            markdown += "1. " + text + "\n"
+
+        # Ненумерований список
+        elif command == "unordered-list":
+            markdown += "- " + text + "\n"
+
+    # Виведення всієї Markdown-розмітки
+    print(markdown, end="")
+
