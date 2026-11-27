@@ -1,7 +1,8 @@
-# Функція для виведення основ
+
+# Функція для виведення довідки
 def show_help():
     # Список усіх доступних форматерів
-    print("\nAvailable formatters: plain bold italic header link inline-code ordered-list unordered-list new-line")
+    print("\nAvailable formatters: plain, bold, italic, header, link, inline-code, ordered-list, unordered-list, new-line")
 
     # Спеціальні команди
     print("\nSpecial commands: !help !done")
@@ -38,6 +39,11 @@ while True:
 
     # Введено команду завершення програми
     elif command == "!done":
+
+        # Збереження Markdown у файл
+        with open("output.md", "w", encoding="utf-8") as file:
+            file.write(markdown)
+
         break
 
     # Введено невідому команду
@@ -76,7 +82,7 @@ while True:
         url = input("URL: ")
 
         # Додавання посилання до Markdown
-        markdown += "[" + label + "](" + url + ")\n"
+        markdown += "[" + label + "]("'https://' + url + ")\n"
 
     # Введено форматер списку
     elif command == "ordered-list" or command == "unordered-list":
